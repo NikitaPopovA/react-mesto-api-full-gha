@@ -1,0 +1,26 @@
+.header__user-info {
+  margin: 51px 24px 46px 0;
+  height: 22px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: right;
+  color: #fff;
+}
+
+@media screen and (max-width: 940px) {
+  .header__user-info {
+    margin: 39px 24px 31.6px auto;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .header__user-info {
+    margin: 34px 30px 33px 0;
+    height: 17px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

@@ -1,0 +1,10 @@
+.registration__link {
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.registration__link:hover {
+  opacity: .6;
+}

@@ -1,0 +1,43 @@
+.grid-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: black;
+  transition: 0.4s ease-in-out;
+}
+.grid-card:hover {
+  filter: brightness(45%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

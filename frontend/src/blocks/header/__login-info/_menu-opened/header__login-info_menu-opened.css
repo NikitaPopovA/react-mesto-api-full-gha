@@ -1,0 +1,16 @@
+.header__login-info_menu-opened {
+  margin: 0;
+  padding: 40px 0 40px 0;
+  display: flex;
+  position: fixed;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  background: #000;
+  gap: 18px;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  z-index: 1;
+}
