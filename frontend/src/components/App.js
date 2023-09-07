@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
-import "../index.css";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
+import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import Api from "../utils/api.js";
+import { options } from '../utils/utils.js'
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import DeleteFormCardsPopup from "./DeleteFormCardsPopup";
-import ImagePopup from "./ImagePopup";
-import api from "../utils/api.js";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import PopupWithForm from "./PopupWithForm";
+import { Route, Switch, useHistory } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
-import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
+import ProtectedRoute from "./ProtectedRoute";
 import { registerApi, loginApi, getContent } from "../utils/Auth";
-import { Route, Switch, useHistory } from "react-router-dom";
+import DeleteFormCardsPopup from "./DeleteFormCardsPopup";
+import "../index.css";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -33,57 +34,61 @@ function App() {
   const [cardForDelete, setCardForDelete] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isLoginSucceed, setIsLoginSuceed] = useState(true);
-  const history = useHistory();
 
-  useEffect(() => { 
-    tokenCheck(); 
-    if (loggedIn) {
-      Promise.all([api.getProfileInfo(), api.getCardsInfo()]) 
-        .then(([dataUser, dataCards]) => { 
-          setCurrentUser(dataUser); 
-          setCards(dataCards); 
-        }) 
-        .catch((err) => { 
-          console.log(err); 
-        }); 
-    }
-  }, [loggedIn]);
+  const history = useHistory();
+  const jwt = localStorage.getItem('jwt');
+  const api = new Api(options, jwt);
+
+  useEffect(() => {
+    if (jwt) {
+      Promise.all([api.getProfileInfo(), api.getCardsInfo()])
+        .then(([dataUser, dataCards]) => {
+          setCurrentUser(dataUser);
+          setCards(dataCards);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    tokenCheck();
+  }, [jwt]);
 
   function handleLogin(password, email) {
     loginApi(password, email)
       .then((res) => res.json())
       .then((res) => {
-        if (!res.token) {
-          setIsLoginSuceed(false);
-          throw new Error("Missing jwt");
-        }
+        if (!res.token) {setIsLoginSuceed(false); throw new Error("Missing jwt"); }
         localStorage.setItem("jwt", res.token);
-        setLoggedIn(true);
         setIsLoginSuceed(true);
+        setLoggedIn(true);
         setEmail(email);
-        history.push("/react-mesto-auth");
+        history.push("/");
       })
       .catch((error) => {
         console.log(error);
-        setIsInfoTooltipOpen(true);
-        setIsSubmitSucceed(false);
       });
   }
 
   
   const tokenCheck = () => {
-    const jwt = localStorage.getItem("jwt");
     if (!jwt) return;
     getContent(jwt)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 401) {
+          history.push("/sign-in");
+          throw new Error('Необходимо авторизироваться');
+        } else { return res.json() }
+      })
       .then((data) => {
         setLoggedIn(true);
-        history.push("/react-mesto-auth");
-        setEmail(data.data.email);
-      })
+        history.push("/");
+        setEmail(data.email);
+      }
+      )
       .catch((error) => {
         console.log(error);
       });
+
   };
 
   function handleLogout() {
@@ -95,7 +100,7 @@ function App() {
   function handleRegister(password, email) {
     registerApi(password, email)
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 200) {
           handleSetIsInfoTooltipOpen(true);
         } else {
           handleSetIsInfoTooltipOpen(false);
