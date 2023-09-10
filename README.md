@@ -9,8 +9,6 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.55.124
-
-Frontend https://mestopn.students.nomoreparties.co/
-
-Backend https://api.mestopn.students.nomoreparties.co/
+1. IP 158.160.55.124
+2. Frontend https://mestopn.students.nomoreparties.co/
+3. Backend https://api.mestopn.students.nomoreparties.co/
