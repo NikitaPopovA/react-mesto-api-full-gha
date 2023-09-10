@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 84.252.140.85
+IP-адрес 158.160.55.124
 
 Frontend https://mestopn.students.nomoreparties.co/
 
