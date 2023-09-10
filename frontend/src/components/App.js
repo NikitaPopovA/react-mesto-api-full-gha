@@ -8,8 +8,7 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import DeleteFormCardsPopup from "./DeleteFormCardsPopup";
 import ImagePopup from "./ImagePopup";
-import Api from "../utils/api.js";
-import { options } from '../utils/utils.js'
+import api from "../utils/api.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import PopupWithForm from "./PopupWithForm";
 import Login from "./Login";
@@ -34,61 +33,58 @@ function App() {
   const [cardForDelete, setCardForDelete] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isLoginSucceed, setIsLoginSuceed] = useState(true);
-
   const history = useHistory();
-  const jwt = localStorage.getItem('jwt');
-  const api = new Api(options, jwt);
 
-  useEffect(() => {
-    if (jwt) {
-      Promise.all([api.getProfileInfo(), api.getCardsInfo()])
-        .then(([dataUser, dataCards]) => {
-          setCurrentUser(dataUser);
-          setCards(dataCards);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    tokenCheck();
-  }, [jwt]);
+  useEffect(() => { 
+    if (loggedIn) {
+      Promise.all([api.getProfileInfo(), api.getCardsInfo()]) 
+        .then(([dataUser, dataCards]) => { 
+          setCurrentUser(dataUser); 
+          setCards(dataCards); 
+        }) 
+        .catch((err) => { 
+          console.log(err); 
+        }); 
+    }
+    tokenCheck(); 
+  }, [loggedIn]);
 
   function handleLogin(password, email) {
     loginApi(password, email)
       .then((res) => res.json())
       .then((res) => {
-        if (!res.token) {setIsLoginSuceed(false); throw new Error("Missing jwt"); }
+        if (!res.token) {
+          setIsLoginSuceed(false);
+          throw new Error("Missing jwt");
+        }
         localStorage.setItem("jwt", res.token);
-        setIsLoginSuceed(true);
         setLoggedIn(true);
+        setIsLoginSuceed(true);
         setEmail(email);
-        history.push("/");
+        history.push("/react-mesto-auth");
       })
       .catch((error) => {
         console.log(error);
+        setIsInfoTooltipOpen(true);
+        setIsSubmitSucceed(false);
       });
   }
 
   
   const tokenCheck = () => {
+    const jwt = localStorage.getItem("jwt");
     if (!jwt) return;
     getContent(jwt)
-      .then((res) => {
-        if (res.status === 401) {
-          history.push("/sign-in");
-          throw new Error('Необходимо авторизироваться');
-        } else { return res.json() }
-      })
+      .then((res) => res.json())
       .then((data) => {
         setLoggedIn(true);
-        history.push("/");
-        setEmail(data.email);
-      }
-      )
+        history.push("/react-mesto-auth");
+        setEmail(data.data.email);
+      })
       .catch((error) => {
         console.log(error);
       });
-    };
+  };
 
   function handleLogout() {
     localStorage.removeItem("jwt");

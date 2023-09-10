@@ -15,7 +15,7 @@ const NotFoundError = require('./utils/errors/error-notFound');
 
 mongoose.set('strictQuery', false);
 
-const { PORT = 4000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
+const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
 mongoose.connect(DB_URL);
 
@@ -29,6 +29,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(errorLogger);
+
 app.use(requestLogger);
 app.use('/crash-test', () => {
   setTimeout(() => {
