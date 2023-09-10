@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
+import "../index.css";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
-import ImagePopup from "./ImagePopup";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import Api from "../utils/api.js";
-import { options } from '../utils/utils.js'
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import { Route, Switch, useHistory } from "react-router-dom";
+import DeleteFormCardsPopup from "./DeleteFormCardsPopup";
+import ImagePopup from "./ImagePopup";
+import Api from "../utils/api.js";
+import { options } from '../utils/utils.js'
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import PopupWithForm from "./PopupWithForm";
 import Login from "./Login";
 import Register from "./Register";
-import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
 import { registerApi, loginApi, getContent } from "../utils/Auth";
-import DeleteFormCardsPopup from "./DeleteFormCardsPopup";
-import "../index.css";
+import { Route, Switch, useHistory } from "react-router-dom";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -88,8 +88,7 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
-
-  };
+    };
 
   function handleLogout() {
     localStorage.removeItem("jwt");
@@ -100,7 +99,7 @@ function App() {
   function handleRegister(password, email) {
     registerApi(password, email)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 201) {
           handleSetIsInfoTooltipOpen(true);
         } else {
           handleSetIsInfoTooltipOpen(false);

@@ -29,7 +29,6 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(errorLogger);
-
 app.use(requestLogger);
 app.use('/crash-test', () => {
   setTimeout(() => {
