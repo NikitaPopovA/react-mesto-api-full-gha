@@ -28,7 +28,7 @@ app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(errorLogger);
+
 app.use(requestLogger);
 app.use('/crash-test', () => {
   setTimeout(() => {
@@ -60,12 +60,14 @@ app.post(
   }),
   login,
 );
+
 app.use(auth);
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.use('/*', (req, res, next) => next(new NotFoundError('Страницы не существует')));
+app.use(errorLogger);
 app.use(errors());
 
 app.use(require('./middlewares/handle-errors'));
