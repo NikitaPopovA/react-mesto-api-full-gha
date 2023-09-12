@@ -185,7 +185,7 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     if (isLiked) {
       api
@@ -249,7 +249,7 @@ function App() {
       <div className="App">
         <Header loggedIn={loggedIn} onLogout={handleLogout} email={email} />
         <Switch>
-          <ProtectedRoute exact path="/react-mesto-auth" loggedIn={loggedIn}>
+          <ProtectedRoute exact path="/" loggedIn={loggedIn}>
             <Main
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}

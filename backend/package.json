@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NikitaPopovA/express-mesto-gha.git"
+    "url": "git+https://github.com/NikitaPopovA/react-mesto-api-full.git"
   },
   "author": "Popov Nikita",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/NikitaPopovA/express-mesto-gha/issues"
+    "url": "https://github.com/NikitaPopovA/react-mesto-api-full/issues"
   },
-  "homepage": "https://github.com/NikitaPopovA/express-mesto-gha#readme",
+  "homepage": "https://github.com/NikitaPopovA/react-mesto-api-full#readme",
   "devDependencies": {
     "eslint": "^8.45.0",
     "eslint-config-airbnb-base": "^15.0.0",
